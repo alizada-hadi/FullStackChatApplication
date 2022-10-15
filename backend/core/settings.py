@@ -120,6 +120,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = "core.asgi.application"
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
 CHANNEL_LAYERS = {
     'default' : {
         'BACKEND' : 'channels_redis.core.RedisChannelLayer', 

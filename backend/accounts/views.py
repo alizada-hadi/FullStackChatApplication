@@ -54,3 +54,13 @@ def register_user(request):
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def fetchUsers(request):
+    user = request.user
+    users = User.objects.exclude(email=user.email)
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

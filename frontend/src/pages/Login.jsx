@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/auth/authSlice";
 
@@ -7,11 +7,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     const data = { email, password };
     e.preventDefault();
     dispatch(login(data));
+    navigate("/");
   };
   return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-12">

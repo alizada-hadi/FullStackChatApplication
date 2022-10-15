@@ -3,6 +3,7 @@ import authService from "./authService";
 
 const initialState = {
   user: "",
+  users: [],
   status: "idle",
   error: null,
 };
@@ -41,10 +42,33 @@ export const login = createAsyncThunk(
   }
 );
 
+export const fetchUsers = createAsyncThunk(
+  "auth/users/fetched",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.fetchUsers(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.message &&
+          error.response.message.data) ||
+        error.response ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = "";
+      state.status = "idle";
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -67,8 +91,20 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(fetchUsers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.users = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
 
 export default authSlice.reducer;
+export const { logout } = authSlice.actions;
