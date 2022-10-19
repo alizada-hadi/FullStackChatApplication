@@ -22,7 +22,7 @@ const Conversations = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-4xl my-5 font-medium">Conversations List</h1>
-      {participants.map((parti, index) => (
+      {participants?.map((parti, index) => (
         <div key={index} className="border w-96 rounded-lg">
           <Link to={`/chats/${createConversationName(parti.username)}`}>
             <div className="flex justify-start mt-5 ml-5">
