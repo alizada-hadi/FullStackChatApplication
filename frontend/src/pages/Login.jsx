@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/auth/authSlice";
+import { useFormik } from 'formik'
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
 
   const submitHandler = (e) => {
     const data = { email, password };
@@ -17,8 +20,8 @@ const Login = () => {
   };
   return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-12">
-      <div className="border-2 p-8 rounded-lg shadow-inner bg-slate-50">
-        <h1 className="text-2xl text-gray-700 font-semibold">Register</h1>
+      <div className="border-2 p-8 rounded-lg shadow-inner">
+        <h1 className="text-2xl text-gray-700 font-semibold font-Inter">Sign In</h1>
         <div className="mx-4 mt-6">
           <form onSubmit={submitHandler}>
             <div>

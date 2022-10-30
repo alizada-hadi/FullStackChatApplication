@@ -4,14 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 const Chat = () => {
   const { conversationName } = useParams();
+  const name = conversationName.split("__")
   const dispatch = useDispatch();
   const { user, users } = useSelector((state) => state.auth);
   const [welcomeMessage, setWelcomeMessage] = useState("");
-  const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
 
-  console.log(chatHistory);
+  const participant = users.find(user => user.username === name[1])
+
 
   const { readyState, sendJsonMessage } = useWebSocket(
     user ? `ws://127.0.0.1:8000/${conversationName}/` : null,
@@ -55,50 +56,51 @@ const Chat = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="my-4">
-        <form onSubmit={onSendMessage}>
-          <div className="w-[25rem]">
-            <label
-              htmlFor="message"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-            >
-              Your message
-            </label>
-            <textarea
-              name="message"
+    <div class="container mx-auto">
+      <div class="max-w-3xl border rounded mt-10">
+        <div>
+          <div class="w-full">
+            <div class="relative flex items-center p-3 border-b border-gray-300">
+              <img class="object-cover w-10 h-10 rounded-full"
+                src={participant?.avatar} alt="username" />
+              <span class="block ml-2 font-bold text-gray-600">{participant?.username}</span>
+              <span class="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3">
+              </span>
+            </div>
+            <div class="relative w-full p-6 overflow-y-auto h-[25rem] mt-10">
+
+              <ul class="space-y-2">
+                {chatHistory.map((chat, index) => (
+                <li key={index} className={user.email === chat.from_user.email ? "flex justify-start" : "flex justify-end"}>
+                  <div className={user.email === chat.from_user.email ? "relative max-w-xl px-4 py-2 text-gray-700 rounded shadow" : "relative max-w-xl px-4 py-2 text-gray-700 rounded shadow bg-gray-100"}>
+                    <span class="block">{chat.content}</span>
+                  </div>
+                </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="flex items-center justify-between w-full p-3 border-t border-gray-300">
+              <form onSubmit={onSendMessage} className="flex items-center w-full">
+              <input 
+              type="text"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              id="message"
-              rows="4"
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Your message..."
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="px-6 py-3 mt-3 text-white text-lg rounded-lg border bg-indigo-900"
-          >
-            Send
-          </button>
-        </form>
-      </div>
-      <div>
-        {chatHistory.map((message, index) => (
-          <div key={index}>
-            <div
-              className={
-                user.email === message.from_user.email
-                  ? "flex justify-start"
-                  : "flex justify-end"
-              }
-            >
-              <div>
-                {message.from_user.username} : {message.content}
-              </div>
+              onChange={(e) => setMessage(e.target.value)} 
+              placeholder="Message"
+                class="block w-full py-4 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
+                name="message" required />
+              
+              <button type="submit">
+                <svg class="w-8 h-8 text-gray-500 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+              </button>
+              </form>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

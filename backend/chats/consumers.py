@@ -26,7 +26,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             str(self.conversation_name), 
             self.channel_name,
         )
-        message = self.conversation.messages.all().order_by("-timestamp")[0:50]
+        message = self.conversation.messages.all().order_by("timestamp")[0:50]
         self.send_json(
             {
                 "type": "last_50_messages",
