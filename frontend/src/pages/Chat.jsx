@@ -11,7 +11,8 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
 
-  const participant = users.find(user => user.username === name[1])
+
+  const participant = users.find(user => user.username === name[0])
 
 
   const { readyState, sendJsonMessage } = useWebSocket(
