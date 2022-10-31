@@ -5,5 +5,7 @@ A full-stack Django and React chat application that enables you chat with other 
 ### Demo
 
 
-https://user-images.githubusercontent.com/84295743/198969294-a0a779e8-8a23-4e8a-8bf7-fbb98ecb8a94.mp4
+
+
+https://user-images.githubusercontent.com/84295743/198975960-47d51c37-f80b-4d73-a4c5-6b45bf55769b.mp4
 
